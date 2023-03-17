@@ -24,6 +24,13 @@ public:
         }
     }
 
+    void setup(int size) {
+        for (int i = 0; i < size; i++) {
+            T *p = new T();
+            freeList.push_back(p);
+        }    
+    }
+
     T* get() {
         if (freeList.size > 0) {
             T *p = (T*)freeList.head;

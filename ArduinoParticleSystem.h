@@ -13,7 +13,7 @@ public:
 class ArduinoParticleSystem
 {
 private:
-  ListPool<Particle> particles();
+  ListPool<particle> particles;
 public:
   particle* p;
 
@@ -24,12 +24,21 @@ public:
 
 ArduinoParticleSystem::ArduinoParticleSystem()
 {
-  
+  particles.setup(5);
+  for(int i = 0; i < 5; i++)
+  {
+    p = particles.get();
+    p->position.set(i, i);
+  }
 }
 
 void ArduinoParticleSystem::update()
 {
-  
+    // Print all "x" values in the used list using an iterator
+    for (auto it = particles.usedList.begin(); it != particles.usedList.end(); ++it) {
+        p = (particle*)*it;
+        p->position.print("position");
+    }
 }
 
 #endif 
