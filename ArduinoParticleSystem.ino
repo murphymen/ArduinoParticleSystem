@@ -1,5 +1,7 @@
+#include "TimeManager.h"
 #include "ArduinoParticleSystem.h"
 
+TimeManager timeManager;
 ArduinoParticleSystem particleSystem;
 
 void setup() {
@@ -8,5 +10,6 @@ void setup() {
 }
 
 void loop() {
-    particleSystem.update();
+    timeManager.update();
+    particleSystem.update(timeManager.deltaTime);
 }

@@ -8,7 +8,20 @@
 // class particle that inherits from ListNode
 class particle : public ListNode, public Particle {
 public:
+  void update(unsigned long deltaTime) override;
 };
+
+// Function update() for injecting into particle object
+void particle::update(unsigned long deltaTime) {
+    // Substract time.deltaTime from lifetime
+    lifeTime -= deltaTime;
+    // If lifetime is less than time.deltaTime, set active to false
+    if (lifeTime < deltaTime) {
+        active = false;
+    }
+
+    Serial.print(deltaTime);
+}
 
 class ArduinoParticleSystem
 {
@@ -19,7 +32,7 @@ public:
 
 
   ArduinoParticleSystem();
-  void update();
+  void update(unsigned long deltaTime);
 };
 
 ArduinoParticleSystem::ArduinoParticleSystem()
@@ -32,11 +45,19 @@ ArduinoParticleSystem::ArduinoParticleSystem()
   }
 }
 
-void ArduinoParticleSystem::update()
+void ArduinoParticleSystem::update(unsigned long deltaTime)
 {
     // Print all "x" values in the used list using an iterator
     for (auto it = particles.usedList.begin(); it != particles.usedList.end(); ++it) {
         p = (particle*)*it;
+        p->update(deltaTime);
+
+        if(!p->active)
+        {
+            particles.put(p);
+            continue;
+        }
+
         p->position.print("position");
     }
 }

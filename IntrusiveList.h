@@ -85,8 +85,8 @@ public:
         }
     }
     
-    /*
-    void remove(ListNode *node) {
+
+    ListNode* remove(ListNode *node) {
         if (node->prev != nullptr) {
             node->prev->next = node->next;
         } else {
@@ -97,10 +97,10 @@ public:
         } else {
             tail = node->prev;
         }
-        delete node;
         size--;
+        return node;
     }
-    */
+    
 
    // class iterator
 class iterator {
@@ -153,6 +153,7 @@ public:
     // Method ListNode* remove(iterator it)
     // Remove the node pointed to by the iterator and return this node
     ListNode* remove(IntrusiveList::iterator it) {
+        /*
         ListNode *node = it.node;
         if (node->prev != nullptr) {
             node->prev->next = node->next;
@@ -166,6 +167,8 @@ public:
         }
         size--;
         return node;
+        */
+        return remove(it.node);
     }
 
     // Method iterator begin()
