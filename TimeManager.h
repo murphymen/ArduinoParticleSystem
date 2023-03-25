@@ -4,36 +4,43 @@
 #include "Arduino.h"
 
 class TimeManager {
-  public:
-    unsigned long prevTime;
-    unsigned int frameCount;
-    int fps;
-    unsigned long deltaTime;
-
+public:
     TimeManager() {
-      prevTime = 0;
-      frameCount = 0;
-      fps = 0;
-      deltaTime = 0;
+        lastTime = 0;
+        deltaTime = 0.0f;
+        fps = 0;
+        frames = 0;
     }
 
     void update() {
-      unsigned long currentTime = millis();
-      deltaTime = currentTime - prevTime;
-
-      if (deltaTime > 1000) {
-        fps = frameCount;
-        prevTime = currentTime;
-        frameCount = 0;
-      }
-
-      frameCount++;
+        long currentTime = millis();
+        if (lastTime == 0) {
+            lastTime = currentTime;
+            return;
+        }
+        deltaTime = (currentTime - lastTime) / 1000.0f;
+        lastTime = currentTime;
+        frames++;
     }
 
-    int get_fps() {
-      return 1000/deltaTime;
+    void printFPS() {
+        if (frames == 0) {
+            fps = 0;
+        } else {
+            fps = (int)(1.0f / deltaTime);
+        }
+        Serial.print("FPS: ");
+        Serial.println(fps);
+        frames = 0;
     }
+
+private:
+    long lastTime;
+    float deltaTime;
+    int fps;
+    int frames;
 };
+
 
 
 #endif

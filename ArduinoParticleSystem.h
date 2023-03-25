@@ -3,6 +3,9 @@
 
 #include "ListPool.h"
 #include "Particle.h"
+#include "TimeManager.h"
+
+
 
 
 // class particle that inherits from ListNode
@@ -20,7 +23,7 @@ void particle::update(unsigned long deltaTime) {
         active = false;
     }
 
-    Serial.print(deltaTime);
+    //Serial.print(deltaTime);
 }
 
 class ArduinoParticleSystem
@@ -49,16 +52,23 @@ void ArduinoParticleSystem::update(unsigned long deltaTime)
 {
     // Print all "x" values in the used list using an iterator
     for (auto it = particles.usedList.begin(); it != particles.usedList.end(); ++it) {
+        //timeManager.update();
         p = (particle*)*it;
         p->update(deltaTime);
+        //timeManager.update();
+        //Serial.println(timeManager.deltaTime);
 
         if(!p->active)
         {
             particles.put(p);
             continue;
         }
+        //timeManager.update();
+        //Serial.println(timeManager.deltaTime);
 
         p->position.print("position");
+        //timeManager.update();
+        //Serial.println(timeManager.deltaTime);
     }
 }
 
